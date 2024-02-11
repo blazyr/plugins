@@ -1,0 +1,2 @@
+[workspace]
+members = ["blazyr_google_search_plugin"]
