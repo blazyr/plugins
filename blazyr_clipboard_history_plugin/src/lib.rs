@@ -51,8 +51,10 @@ pub fn on_dispose() -> RResult<(), RBoxError> {
 
 #[sabi_extern_fn]
 pub fn on_entity_action(_id: u64, arg: ROption<RStr>) -> RResult<(), RBoxError> {
+    // todo see platform target and use macosx or linux ..?
     // let query = querystring::stringify(vec![("q", arg.map(|v| v.as_str()).unwrap_or(""))]);
     // webbrowser::open(&format!("https://www.google.com/search?{}", query))
     //     .map_err(RBoxError::new)
     //     .into()
+    Ok(()).into()
 }
