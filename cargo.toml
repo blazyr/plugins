@@ -1,2 +1,2 @@
 [workspace]
-members = ["blazyr_google_search_plugin"]
+members = ["blazyr_google_search_plugin", "blazyr_clipboard_history_plugin"]
