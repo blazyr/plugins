@@ -8,7 +8,7 @@ use abi_stable::{
         RStr, RVec,
     },
 };
-use spotlight_extension::{Plugin, Plugin_Ref, REntity};
+use blazyr_extension::{Plugin, Plugin_Ref, REntity};
 use thiserror::Error;
 
 #[derive(Error, Debug)]

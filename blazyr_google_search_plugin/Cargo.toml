@@ -8,7 +8,7 @@ name = "plugin"
 crate-type = ["cdylib"]
 
 [dependencies]
-spotlight-extension = { path = "../extension/" }
+blazyr-extension = { path = "../extension/" }
 anyhow = "1.0.79"
 thiserror = "1.0.56"
 abi_stable = { version = "0.11.3", default-features = false }
