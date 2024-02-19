@@ -34,6 +34,7 @@ fn instantiate_root_module() -> Plugin_Ref {
 pub fn entities() -> RResult<RVec<REntity>, RBoxError> {
     let entity = REntity::builder(0, "Google")
         .description("Search on google")
+        .icon_data(ICON.to_vec())
         .build();
     ROk(vec![entity].into())
 }
@@ -55,3 +56,5 @@ pub fn on_entity_action(_id: u64, arg: ROption<RStr>) -> RResult<(), RBoxError> 
         .map_err(RBoxError::new)
         .into()
 }
+
+const ICON: &[u8] = include_bytes!("./google.bmp");
