@@ -3,7 +3,8 @@ use abi_stable::{
     prefix_type::PrefixTypeTrait,
     sabi_extern_fn,
     std_types::{
-        RBoxError, ROption,
+        RBoxError,
+        ROption::{self},
         RResult::{self, RErr, ROk},
         RStr, RString, RVec,
     },
@@ -43,7 +44,6 @@ fn component_clickable(component: RComponentClickable, id: RString) -> RResult<(
 pub fn entities() -> RResult<RVec<REntity>, RBoxError> {
     let entity = REntity::builder(0, "Google")
         .description("Search on google")
-        .icon_data(ICON.to_vec())
         .build();
     ROk(vec![entity].into())
 }
@@ -59,12 +59,6 @@ pub fn on_dispose() -> RResult<(), RBoxError> {
 }
 
 #[sabi_extern_fn]
-pub fn on_entity_action(_id: u64, arg: ROption<RStr>) -> RResult<REntityActionResponse, RBoxError> {
-    let query = querystring::stringify(vec![("q", arg.map(|v| v.as_str()).unwrap_or(""))]);
-    webbrowser::open(&format!("https://www.google.com/search?{}", query))
-        .map(|_| REntityActionResponse::None)
-        .map_err(RBoxError::new)
-        .into()
+pub fn on_entity_action(_id: u64, _: ROption<RStr>) -> RResult<REntityActionResponse, RBoxError> {
+    RResult::ROk(REntityActionResponse::None)
 }
-
-const ICON: &[u8] = include_bytes!("./google.bmp");
