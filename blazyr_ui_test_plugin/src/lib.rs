@@ -4,13 +4,14 @@ use abi_stable::{
     sabi_extern_fn,
     std_types::{
         RBoxError,
-        ROption::{self},
+        ROption::{self, RNone, RSome},
         RResult::{self, RErr, ROk},
         RStr, RString, RVec,
     },
 };
 use blazyr_extension::{
-    ui::RComponentClickable, Plugin, Plugin_Ref, REntity, REntityActionResponse,
+    ui::{RComponent, RComponentClickable},
+    Plugin, Plugin_Ref, REntity, REntityActionResponse,
 };
 use thiserror::Error;
 
@@ -42,8 +43,8 @@ fn component_clickable(component: RComponentClickable, id: RString) -> RResult<(
 
 #[sabi_extern_fn]
 pub fn entities() -> RResult<RVec<REntity>, RBoxError> {
-    let entity = REntity::builder(0, "Google")
-        .description("Search on google")
+    let entity = REntity::builder(0, "UI TEST")
+        .description("TEST YOUR UI")
         .build();
     ROk(vec![entity].into())
 }
@@ -60,5 +61,23 @@ pub fn on_dispose() -> RResult<(), RBoxError> {
 
 #[sabi_extern_fn]
 pub fn on_entity_action(_id: u64, _: ROption<RStr>) -> RResult<REntityActionResponse, RBoxError> {
-    RResult::ROk(REntityActionResponse::None)
+    RResult::ROk(REntityActionResponse::Ui(RComponent::Column {
+        children: RSome(
+            vec![
+                blazyr_extension::ui::RComponent::Container {
+                    child: RNone,
+                    on_click: RNone,
+                },
+                blazyr_extension::ui::RComponent::Container {
+                    child: RNone,
+                    on_click: RNone,
+                },
+                blazyr_extension::ui::RComponent::Container {
+                    child: RNone,
+                    on_click: RNone,
+                },
+            ]
+            .into(),
+        ),
+    }))
 }
