@@ -3,16 +3,13 @@ use abi_stable::{
     prefix_type::PrefixTypeTrait,
     sabi_extern_fn,
     std_types::{
-        RBoxError,
+        RBox, RBoxError,
         ROption::{self, RNone, RSome},
         RResult::{self, RErr, ROk},
         RStr, RString, RVec,
     },
 };
-use blazyr_extension::{
-    ui::{RComponent, RComponentClickable},
-    Plugin, Plugin_Ref, REntity, REntityActionResponse,
-};
+use blazyr_extension::{ui::RComponent, Plugin, Plugin_Ref, REntity, REntityActionResponse};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -36,8 +33,8 @@ fn instantiate_root_module() -> Plugin_Ref {
 }
 
 #[sabi_extern_fn]
-fn component_clickable(component: RComponentClickable, id: RString) -> RResult<(), RBoxError> {
-    println!("{:?} {}", component, id);
+fn component_clickable(id: RString) -> RResult<(), RBoxError> {
+    println!("{}", id);
     ROk(())
 }
 
@@ -64,17 +61,17 @@ pub fn on_entity_action(_id: u64, _: ROption<RStr>) -> RResult<REntityActionResp
     RResult::ROk(REntityActionResponse::Ui(RComponent::Column {
         children: RSome(
             vec![
-                blazyr_extension::ui::RComponent::Container {
-                    child: RNone,
-                    on_click: RNone,
+                blazyr_extension::ui::RComponent::Clickable {
+                    on_click: RSome(RString::from("hello")),
+                    child: RSome(RBox::new(blazyr_extension::ui::RComponent::Container {
+                        child: RNone,
+                    })),
                 },
-                blazyr_extension::ui::RComponent::Container {
-                    child: RNone,
-                    on_click: RNone,
-                },
-                blazyr_extension::ui::RComponent::Container {
-                    child: RNone,
-                    on_click: RNone,
+                blazyr_extension::ui::RComponent::Clickable {
+                    on_click: RSome(RString::from("world")),
+                    child: RSome(RBox::new(blazyr_extension::ui::RComponent::Container {
+                        child: RNone,
+                    })),
                 },
             ]
             .into(),
